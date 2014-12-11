@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -26,7 +27,7 @@ import com.github.zhengweiyi.fis.plugin.util.TaskRunnerException;
  * @author Zhengweiyi
  *
  */
-@Mojo(name="release")
+@Mojo(name = "release", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class ReleaseMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "${project}")
@@ -158,6 +159,12 @@ public class ReleaseMojo extends AbstractMojo {
 		if (md5) {
 			arguments.add("--md5");
 		}
+        if (lint) {
+            arguments.add("--lint");
+        }
+        if (test) {
+            arguments.add("--test");
+        }
 		if (pack) {
 			arguments.add("--pack");
 		}
@@ -167,6 +174,9 @@ public class ReleaseMojo extends AbstractMojo {
 		if (domains) {
 			arguments.add("--domains");
 		}
+        if (watch) {
+            arguments.add("--watch");
+        }
 		if (destPath != null) {
 			arguments.add("--dest");
 			arguments.add("\"" + destPath.getPath() + "\"");

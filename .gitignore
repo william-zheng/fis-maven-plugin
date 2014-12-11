@@ -12,10 +12,10 @@
 hs_err_pid*
 /target/
 
+*.iml
 .project
 .classpath
 .settings
+.idea
 
-.nodejs/
-!.nodejs/package.json
 target
