@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.zhengweiyi</groupId>
+	<artifactId>fis-maven-plugin-it</artifactId>
+	<version>0.1.0</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>it-webapp-support</module>
+		<module>it-webapp</module>
+	</modules>
+	
+	<profiles>
+		<profile>
+			<id>develop</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.zhengweiyi</groupId>
+						<artifactId>fis-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>fis release</id>
+								<goals>
+									<goal>release</goal>
+								</goals>
+								<phase>generate-resources</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>deploy</id>
+			<activation><activeByDefault>true</activeByDefault></activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.zhengweiyi</groupId>
+						<artifactId>fis-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>fis release</id>
+								<goals>
+									<goal>release</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<md5>true</md5>
+									<optimize>true</optimize>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<path>/</path>
+						<warSourceDirectory>${project.build.directory}/fis</warSourceDirectory>
+					</configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>com.github.zhengweiyi</groupId>
+					<artifactId>fis-maven-plugin</artifactId>
+					<version>0.1.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>0.0.19</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+							<goal>npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<nodeVersion>v0.10.33</nodeVersion>
+							<npmVersion>1.4.28</npmVersion>
+							<nodeDownloadRoot>http://npm.taobao.org/dist/</nodeDownloadRoot>
+							<npmDownloadRoot>http://registry.npm.taobao.org/npm/-/</npmDownloadRoot>
+							<workingDirectory>${basedir}/.nodejs</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
