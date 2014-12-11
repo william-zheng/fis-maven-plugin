@@ -91,72 +91,9 @@ fis-maven-plugin无法单独工作，需要配合frontend-maven-plugin使用，�
         </configuration>
     </plugin>
 
-当然，仅有上面3段代码还是不能工作的，我把完整的build段贴出来。
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.tomcat.maven</groupId>
-                    <artifactId>tomcat7-maven-plugin</artifactId>
-                    <version>2.2</version>
-                    <configuration>
-                        <path>/</path>
-                        <warSourceDirectory>${project.build.directory}/fis</warSourceDirectory>
-                    </configuration>
-                </plugin>
-                
-                <plugin>
-                    <groupId>com.github.zhengweiyi</groupId>
-                    <artifactId>fis-maven-plugin</artifactId>
-                    <version>0.1.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>0.0.19</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <nodeVersion>v0.10.33</nodeVersion>
-                            <npmVersion>1.4.28</npmVersion>
-                            <nodeDownloadRoot>http://npm.taobao.org/dist/</nodeDownloadRoot>
-                            <npmDownloadRoot>http://registry.npm.taobao.org/npm/-/</npmDownloadRoot>
-                            <workingDirectory>${basedir}/.nodejs</workingDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.github.zhengweiyi</groupId>
-                <artifactId>fis-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>fis release</id>
-                        <goals>
-                            <goal>release</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <md5>true</md5>
-                            <optimize>true</optimize>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+当然，仅有上面3段代码还是不能工作的，具体可以访问
+https://github.com/william-zheng/fis-maven-plugin/blob/master/src/it/fis-quickstart-demo/pom.xml
+里面有我认为的“最佳实践”
 
 路径对应关系
 ----
@@ -190,6 +127,10 @@ fis-maven-plugin无法单独工作，需要配合frontend-maven-plugin使用，�
 如果使用命令
 
     mvn install
+    
+或者你也可以使用（忽略测试，直接安装）
+
+    mvn install -DskipTests
     
 你可以上传到公司的私有仓库里，这样小伙伴们就能直接使用了。
 
@@ -237,33 +178,33 @@ fis-maven-plugin无法单独工作，需要配合frontend-maven-plugin使用，�
 
 * md5
 
-    类型:boolean  默认值:false  含义:是否在编译的时候可以对文件自动加md5戳
+    类型:boolean；默认值:false；命令行属性:fis.release.md5；含义:是否在编译的时候可以对文件自动加md5戳
    
 * lint
 
-    类型:boolean  默认值:false  含义：是否在编译的时候根据项目配置自动代码检查
+    类型:boolean；默认值:false；命令行属性:fis.release.lint；含义:是否在编译的时候根据项目配置自动代码检查
 
 * test
 	
-	类型:boolean  默认值:false  含义：是否在编译的时候对代码进行自动化测试
+	类型:boolean；默认值:false；命令行属性:fis.release.test；含义:是否在编译的时候对代码进行自动化测试
 	
 * pack
 	
-	类型:boolean  默认值:false  含义：是否对产出文件根据项目配置进行打包
+	类型:boolean；默认值:false；命令行属性:fis.release.pack；含义:是否对产出文件根据项目配置进行打包
 
 * optimize
 
-    类型:boolean  默认值:false  含义：是否对js、css、html进行压缩
+    类型:boolean；默认值:false；命令行属性:fis.release.optimize；含义:是否对js、css、html进行压缩
 
 * domains
 
-    类型:boolean  默认值:false  含义：是否为资源添加domain域名
+    类型:boolean；默认值:false；命令行属性:fis.release.domains；含义:是否为资源添加domain域名
 	
 * destPath
 
-    类型:String 默认值${project.build.directory}/fis 即 --dest Path 的形式
+    类型:String；默认值${project.build.directory}/fis；命令行属性:fis.release.destPath；
     
-    注意和tomcat的路径保持一致
+    即 --dest Path 的形式，注意和tomcat的路径保持一致
 	
 * destName
 
@@ -271,11 +212,11 @@ fis-maven-plugin无法单独工作，需要配合frontend-maven-plugin使用，�
 	
 * watch
 
-    类型:boolean  默认值:false  含义：是否对项目进行增量编译，监听文件变化再触发编译
+    类型:boolean；默认值:false；命令行属性:fis.release.watch；含义:是否对项目进行增量编译，监听文件变化再触发编译
     
     特别提醒，使用了watch，maven就不会继续进行下面的处理，而是停留在监听状态，所以需要启动的同学最好使用命令 
     
-        mvn fis:release -Dwatch=true
+        mvn fis:release -Dfis.release.watch=true
         
     单独启动一个处理进程。
 	
@@ -285,13 +226,13 @@ fis-maven-plugin无法单独工作，需要配合frontend-maven-plugin使用，�
 	
 * nodejs_base
 
-    类型:String 默认值:${basedir}/.nodejs 
+    类型:String；默认值:${basedir}/.nodejs；命令行属性:fis.extNodejsBase；
    
-    命令行使用时参数名：extNodejsBase，nodejs安装的目录，请和frontend-maven-plugin插件的配置保持一致
+    含义:nodejs安装的目录，请和frontend-maven-plugin插件的配置保持一致
 	
 * webSrcBase
 	
-	 类型:String 默认值:${basedir}/src/main/webapp，需要fis处理的资源文件的根目录
+	 类型:String；默认值:${basedir}/src/main/webapp；命令行属性:fis.release.webSrcBase；需要fis处理的资源文件的根目录
 
 感谢
 ----

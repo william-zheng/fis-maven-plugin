@@ -36,70 +36,70 @@ public class ReleaseMojo extends AbstractMojo {
 	/**
 	 * 添加 --md5 [level] 或 -m [level] 参数，在编译的时候可以对文件自动加md5戳，从此告别在静态资源url后面写?version=xxx的时代
 	 */
-	@Parameter(property = "md5", defaultValue = "false")
+	@Parameter(property = "fis.release.md5", defaultValue = "false")
 	private boolean md5;
 	
 	/**
 	 * 添加 --lint 或 -l 参数，支持在编译的时候根据项目配置自动代码检查
 	 * 暂不支持
 	 */
-	@Parameter(property = "lint", defaultValue = "false")
+	@Parameter(property = "fis.release.lint", defaultValue = "false")
 	private boolean lint;
 	
 	/**
 	 * 添加 --test 或 -t 参数，支持在编译的时候对代码进行自动化测试
 	 * 暂不支持
 	 */
-	@Parameter(property = "test", defaultValue = "false")
+	@Parameter(property = "fis.release.test", defaultValue = "false")
 	private boolean test;
 	
 	/**
 	 * 添加 --pack 或 -p 参数，对产出文件根据项目配置进行打包
 	 */
-	@Parameter(property = "pack", defaultValue = "false")
+	@Parameter(property = "fis.release.pack", defaultValue = "false")
 	private boolean pack;
 	
 	/**
 	 * 添加 --optimize 或 -o 参数，对js、css、html进行压缩
 	 */
-	@Parameter(property = "optimize", defaultValue = "false")
+	@Parameter(property = "fis.release.optimize", defaultValue = "false")
 	private boolean optimize;
 	
 	/**
 	 * 添加 --domains 或 -D 参数，为资源添加domain域名
 	 */
-	@Parameter(property = "domains", defaultValue = "false")
+	@Parameter(property = "fis.release.domains", defaultValue = "false")
 	private boolean domains;
 	
 	/**
 	 * 只支持输出到指定目录文件夹, 只支持绝对路径，或使用maven变量的相对路径
 	 */
-	@Parameter(property = "destPath", defaultValue = "${project.build.directory}/fis")
+	@Parameter(property = "fis.release.destPath", defaultValue = "${project.build.directory}/fis")
 	private File destPath;
 	
 	/**
 	 * 暂不支持
 	 */
-	@Parameter(property = "destName", defaultValue = "preview")
+	@Parameter(property = "fis.release.destName", defaultValue = "preview")
 	private File destName;
 	
 	/**
 	 * 添加 --watch 或 -w 参数，支持对项目进行增量编译，监听文件变化再触发编译
 	 */
-	@Parameter(property = "watch", defaultValue = "false")
+	@Parameter(property = "fis.release.watch", defaultValue = "false")
 	private boolean watch;
 	
 	/**
 	 * 添加 --live 或 -L 参数，支持编译后自动刷新浏览器。Liveload功能需要浏览器支持Web Socket功能，例如Chrome、Firefox、Safari等浏览器。
 	 * 暂不支持
 	 */
-	@Parameter(property = "live", defaultValue = "false")
+	@Parameter(property = "fis.release.live", defaultValue = "false")
 	private boolean live;
 	
-	@Parameter(property = "extNodejsBase", defaultValue = "${basedir}/.nodejs")
+	@Parameter(property = "fis.extNodejsBase", defaultValue = "${basedir}/.nodejs")
 	private File nodejs_base;
 	
-	@Parameter(property = "webSrcBase", defaultValue = "${basedir}/src/main/webapp")
+	@Parameter(property = "fis.release.webSrcBase", defaultValue = "${basedir}/src/main/webapp")
 	private File webSrcBase;
 	
 	private static File global_nodejs_base;

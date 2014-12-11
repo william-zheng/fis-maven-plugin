@@ -11,47 +11,31 @@
 	</modules>
 	
 	<profiles>
+        <profile>
+            <id>install_nodejs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 		<profile>
 			<id>develop</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.github.zhengweiyi</groupId>
-						<artifactId>fis-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>fis release</id>
-								<goals>
-									<goal>release</goal>
-								</goals>
-								<phase>generate-resources</phase>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>deploy</id>
-			<activation><activeByDefault>true</activeByDefault></activation>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>com.github.zhengweiyi</groupId>
 						<artifactId>fis-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>fis release</id>
-								<goals>
-									<goal>release</goal>
-								</goals>
-								<phase>generate-resources</phase>
-								<configuration>
-									<md5>true</md5>
-									<optimize>true</optimize>
-								</configuration>
-							</execution>
-						</executions>
+                        <configuration>
+                            <md5>true</md5>
+                            <optimize>true</optimize>
+                        </configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -70,39 +54,48 @@
 						<warSourceDirectory>${project.build.directory}/fis</warSourceDirectory>
 					</configuration>
 				</plugin>
-				
-				<plugin>
-					<groupId>com.github.zhengweiyi</groupId>
-					<artifactId>fis-maven-plugin</artifactId>
-					<version>0.1.0</version>
-				</plugin>
+
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>0.0.19</version>
+                    <inherited>false</inherited>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>generate-resources</phase>
+                            <configuration>
+                                <nodeVersion>v0.10.33</nodeVersion>
+                                <npmVersion>1.4.28</npmVersion>
+                                <nodeDownloadRoot>http://npm.taobao.org/dist/</nodeDownloadRoot>
+                                <npmDownloadRoot>http://registry.npm.taobao.org/npm/-/</npmDownloadRoot>
+                                <workingDirectory>${basedir}/.nodejs</workingDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 
 		<plugins>
-			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.19</version>
-				<inherited>false</inherited>
-				<executions>
-					<execution>
-						<id>install node and npm</id>
-						<goals>
-							<goal>install-node-and-npm</goal>
-							<goal>npm</goal>
-						</goals>
-						<phase>generate-resources</phase>
-						<configuration>
-							<nodeVersion>v0.10.33</nodeVersion>
-							<npmVersion>1.4.28</npmVersion>
-							<nodeDownloadRoot>http://npm.taobao.org/dist/</nodeDownloadRoot>
-							<npmDownloadRoot>http://registry.npm.taobao.org/npm/-/</npmDownloadRoot>
-							<workingDirectory>${basedir}/.nodejs</workingDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>com.github.zhengweiyi</groupId>
+                <artifactId>fis-maven-plugin</artifactId>
+                <version>0.1.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>fis release</id>
+                        <goals>
+                            <goal>release</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 

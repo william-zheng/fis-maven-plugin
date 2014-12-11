@@ -9,13 +9,6 @@
     <name>fis-maven-plugin</name>
     <description>百度fis的maven插件</description>
 
-    <licenses>
-        <license>
-            <name></name>
-        </license>
-
-    </licenses>
-
     <url>https://github.com/william-zheng/fis-maven-plugin</url>
     <scm>
         <url>https://github.com/william-zheng/fis-maven-plugin</url>
@@ -34,6 +27,26 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>Skip tests</id>
+            <activation>
+                <property><name>skipTests</name></property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
+                        <configuration>
+                            <skipInvocation>true</skipInvocation>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <pluginManagement>
@@ -94,6 +107,12 @@
                             <goal>run</goal>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <profiles>
+                                <profile>install_nodejs</profile>
+                                <profile>deploy</profile>
+                            </profiles>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
